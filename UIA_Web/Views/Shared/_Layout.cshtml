@@ -1,0 +1,118 @@
+﻿<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Ukraine International Airlines (UIA)</title>
+    @Styles.Render("~/Content/mycss")
+    @Scripts.Render("~/bundles/head")
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,900">
+</head>
+<body>
+    <div class="page text-center">
+
+        <div class="rd-navbar-wrap">
+            <nav class="rd-navbar rd-navbar-float" data-layout="rd-navbar-fixed" data-sm-layout="rd-navbar-fixed" data-md-device-layout="rd-navbar-static" data-lg-layout="rd-navbar-static" data-lg-device-layout="rd-navbar-static" data-sm-stick-up-offset="1px" data-md-stick-up-offset="1px" data-lg-stick-up-offset="60px">
+                @Html.Partial("_LoginPartialTop")
+                <div class="rd-navbar-inner">
+                    <!-- RD Navbar Panel-->
+                    <div class="rd-navbar-panel">
+                        <button class="rd-navbar-toggle" data-rd-navbar-toggle=".rd-navbar-nav-wrap"><span></span></button>
+                        <div class="rd-navbar-brand"><a class="reveal-inline-block brand-name" href=@Url.Action("Index","Home")><img class="img-responsive center-block" src="~/images/uia-logo-nav.png" width="233" height="55" alt=""></a></div>
+                    </div>
+                    <div class="rd-navbar-nav-wrap">
+                        <ul class="rd-navbar-nav navbar-left">
+                            <li class="active">@Html.ActionLink("Home", "Index", "Home")</li>
+                            <li>
+                                <a href="#">About</a>
+                                <ul class="rd-navbar-dropdown">
+                                    <li><a href="overview.html">Overview</a></li>
+                                    <li><a href="faq.html">FAQ</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#">Travel Information</a>
+                                <ul class="rd-navbar-megamenu">
+
+                                    <li>
+                                        <h5>Destinations</h5>
+                                        <ul>
+                                            <li><a href="">Malaysia</a></li>
+                                            <li><a href="">Ukraine</a></li>
+                                            <li><a href="">France</a></li>
+                                            <li><a href="">United Kingdom</a></li>
+                                            <li><a href="">Iran</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <h5>Baggage Info</h5>
+                                        <ul>
+                                            <li><a href="">Checked Baggage</a></li>
+                                            <li><a href="">Cabin Baggage</a></li>
+                                            <li><a href="">Sports Equipment</a></li>
+                                            <li><a href="">Mishandled Baggage</a></li>
+                                            <li><a href="">Dangerous Goods</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <h5>Inflight Comforts</h5>
+                                        <ul>
+                                            <li><a href="">Hot Meals</a></li>
+                                            <li><a href="">Seat Options</a></li>
+                                            <li><a href="">Premium Flatbed</a></li>
+                                            <li><a href="">Entertainment</a></li>
+                                            <li><a href="">Duty free and merchandise</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        @Html.Partial("_LoginPartial")
+
+
+                    </div>
+                </div>
+            </nav>
+        </div>
+        @RenderBody()
+        <hr>
+        <footer class="page-footer-widget">
+            <div class="shell shell-wide text-sm-left">
+                <div class="range section-60 section-md-90">
+                    <div class="cell-sm-6 cell-lg-3">
+                        <h5 class="text-bold">Contact Us</h5>
+                        <hr class="divider divider-50 divider-primary divider-sm-left offset-top-12">
+                        <div class="offset-top-30 p">
+                            <div class="unit unit-horizontal unit-spacing-15 text-left">
+                                <div class="unit-left"><span class="text-info icon icon-sm mdi mdi-map-marker"></span></div>
+                                <div class="unit-body"><a class="text-gray" href="#">201-203, Kharkivske Road. <br class="veil reveal-lg-block">Nearest tube: Boryspilska.</a></div>
+                            </div>
+                            <div class="unit unit-horizontal unit-spacing-15 offset-top-10 text-left">
+                                <div class="unit-left"><span class="text-info icon icon-sm mdi mdi-phone"></span></div>
+                                <div class="unit-body"><a class="text-gray" href="callto:#">+38 044 581 50 50</a></div>
+                            </div>
+                            <div class="unit unit-horizontal unit-spacing-15 offset-top-10 text-left">
+                                <div class="unit-left"><span class="text-info icon icon-sm mdi mdi-email-open"></span></div>
+                                <div class="unit-body"><a class="text-gray" href="emailto:#">contact@flyuia.com</a></div>
+                            </div>
+                            <ul class="list-inline offset-top-20">
+                                <li><a class="icon icon-sm text-gray-light fa-facebook" href="https://www.facebook.com/flyuia.worldwide/"></a></li>
+                                <li><a class="icon icon-sm text-gray-light fa-twitter" href="https://twitter.com/fly_uia"></a></li>
+                                <li><a class="icon icon-sm text-gray-light fa-google-plus" href="https://plus.google.com/100548099267076378276"></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="shell shell-wide page-footer-min text-md-left">
+                <p style="color:black">
+                    &#169; <span id="copyright-year"></span> Ukraine International Airlines (UIA) by TP035903. All Rights Reserved.
+                </p>
+            </div>
+        </footer>
+        </div>
+
+        @Scripts.Render("~/bundles/myscripts")
+        @RenderSection("scripts", required: false)
+</body>
+</html>

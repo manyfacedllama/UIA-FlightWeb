@@ -1,0 +1,390 @@
+﻿@model UIA_Web.Models.SearchFlightModel
+@{
+    ViewBag.Title = "Book";
+}
+<main class="page-content">
+        <section class="bg-image-03">
+            <div class="breadcrumb-wrapper">
+                <div class="shell context-dark section-30 section-md-top-280">
+                    <h1 class="offset-top-20 text-ubold">Book your flight ticket.</h1>
+                    <ol class="breadcrumb">
+                        <li><a href="./">Flight</a></li>
+                        <li>
+                                Book
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+        <section class="section-90 section-md-120">
+@using (Html.BeginForm("BookFlight", "Flight", FormMethod.Post, new { @class = "rd-mailform text-left", role = "form"}))
+{    @Html.AntiForgeryToken()
+            <div class="shell">
+                <h2 class="text-ubold text-center">Fill-up the booking details</h2>
+                <hr class="divider divider-info divider-90 divider-offset offset-top-30">
+
+                <div class="section-top-80 section-md-top-60">
+                    <h3 class="text-bold text-capitalize text-center">Select your @Model.Seat_Class seat</h3>
+                    <h4 class="offset-top-20 text-center" id="seat"></h4>
+                    <div id="container"></div>
+                </div>
+                <hr class="divider divider-info divider-90 divider-offset offset-top-50">
+
+
+                    <div class="section-top-80 section-md-top-90">
+                        <h3 class="text-bold text-capitalize text-center">Passenger Details</h3>
+                        <div class="offset-md-top-30 offset-top-20 range range-xs-center">
+                            <div class="cell-md-8">
+
+                                <div class="range">
+                                    <div class="cell-sm-6">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.Name, new { @class = "form-label form-label-outside rd-input-label" })
+                                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control form-control-gray form-control-last-child", type = "text", value = Model.Name })
+                                        </div>
+                                    </div>
+                                    <div class="cell-sm-6 offset-top-20 offset-sm-top-0">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.PassportNumber, new { @class = "form-label form-label-outside rd-input-label" })
+                                            @Html.TextBoxFor(m => m.PassportNumber, new { @class = "form-control form-control-gray  form-control-last-child", type = "text", value = Model.PassportNumber })
+                                        </div>
+                                    </div>
+                                    <div class="cell-sm-6 offset-top-20">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.Email, new { @class = "form-label form-label-outside rd-input-label" })
+                                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control form-control-gray form-control-last-child", value = Model.Email })
+                                        </div>
+                                    </div>
+
+                                    <div class="cell-sm-6 offset-top-20">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.PhoneNumber, new { @class = "form-label form-label-outside rd-input-label" })
+                                            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control form-control-gray  form-control-last-child", type = "text" })
+                                        </div>
+                                    </div>
+                                    <div class="cell-sm-6 offset-top-20">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.DateOfBirth, new { @class = "form-label form-label-outside rd-input-label" })
+                                            @Html.TextBoxFor(m => m.DateOfBirth, "{0:dd/MM/yyyy}", new { @class = "form-control form-control-gray", data_time_picker = "date", placeholder = "dd/MM/yyyy", value = Model.DateOfBirth})
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        <hr class="divider divider-info divider-90 divider-offset offset-top-50">
+                        <div class="section-top-80 section-md-top-90">
+                            <h3 class="text-bold text-capitalize text-center">Flight Details</h3>
+                            <div class="offset-md-top-30 offset-top-20 range range-xs-center">
+                                <div class="cell-md-8">
+                                    <div class="range">
+                                        <div class="cell-sm-4">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.Origin, new { @class = "form-label form-label-outside rd-input-label" })
+                                                @Html.TextBoxFor(m => m.Origin, new { @class = "form-control form-control-gray  form-control-last-child", @readonly = "readonly", type = "text", value = Model.Origin })
+                                            </div>
+                                        </div>
+                                        <div class="cell-sm-4 offset-top-20 offset-sm-top-0">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.Destination, new { @class = "form-label form-label-outside rd-input-label" })
+                                                @Html.TextBoxFor(m => m.Destination, new { @class = "form-control form-control-gray  form-control-last-child", @readonly = "readonly", type = "text", value = Model.Destination })
+                                            </div>
+                                        </div>
+                                        <div class="cell-sm-4 offset-top-20 offset-sm-top-0">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.Time, new { @class = "form-label form-label-outside rd-input-label" })
+                                                @Html.TextBoxFor(m => m.Time, "{0:dd/MM/yyyy hh:mm tt}", new { @class = "form-control  form-control-gray form-control-last-child", @readonly = "readonly", value = Model.Time })
+                                            </div>
+                                        </div>
+                                        @if (Model.hasReturn)
+                                        {
+                                            <div class="cell-sm-4 offset-top-20">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(m => m.OriginReturn, new { @class = "form-label form-label-outside rd-input-label" })
+                                                    @Html.TextBoxFor(m => m.OriginReturn, new { @class = "form-control form-control-gray  form-control-last-child", @readonly = "readonly", type = "text", value = Model.OriginReturn })
+                                                </div>
+                                            </div>
+                                            <div class="cell-sm-4 offset-top-20">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(m => m.DestinationReturn, new { @class = "form-label form-label-outside rd-input-label" })
+                                                    @Html.TextBoxFor(m => m.DestinationReturn, new { @class = "form-control form-control-gray  form-control-last-child", @readonly = "readonly", type = "text", value = Model.DestinationReturn })
+                                                </div>
+                                            </div>
+                                            <div class="cell-sm-4 offset-top-20 ">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(m => m.TimeReturn, new { @class = "form-label form-label-outside rd-input-label" })
+                                                    @Html.TextBoxFor(m => m.TimeReturn, "{0:dd/MM/yyyy hh:mm tt}", new { @class = "form-control  form-control-gray form-control-last-child", @readonly = "readonly", value = Model.Time })
+                                                </div>
+                                            </div>
+                                        }
+                                        <div class="cell-sm-4 offset-top-20">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.SeatNo, new { @class = "form-label form-label-outside rd-input-label" })
+                                                @Html.TextBoxFor(m => m.SeatNo, new { @class = "form-control form-control-gray  form-control-last-child", id = "seat_no", type = "text", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                        <div class="cell-sm-4 offset-top-20">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.TotalPrice, new { @class = "form-label form-label-outside rd-input-label" })
+                                                @Html.TextBoxFor(m => m.TotalPrice, new { @class = "form-control form-control-gray  form-control-last-child", type = "text", @readonly = "readonly", value = "RM" + Model.TotalPrice })
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="divider divider-info divider-90 divider-offset offset-top-50">
+
+                        <div class="section-top-80 section-md-top-90">
+                            <h3 class="text-bold text-capitalize text-center">Payment Details</h3>
+                            <div class="offset-md-top-30 offset-top-20 range range-xs-center">
+                                <div class="cell-md-8">
+                                    <div class="range">
+
+                                        <div class="cell-sm-6">
+                                            <div class="form-group">
+                                                @{
+                                                    List<SelectListItem> cardType = new List<SelectListItem>();
+                                                    cardType.Add(new SelectListItem
+                                                    {
+                                                        Text = "Select your card type",
+                                                        Value = "default",
+                                                        Selected = true,
+                                                        Disabled = true
+                                                    });
+                                                    cardType.Add(new SelectListItem
+                                                    {
+                                                        Text = "Master Card",
+                                                        Value = "Master"
+                                                    });
+                                                    cardType.Add(new SelectListItem
+                                                    {
+                                                        Text = "Visa Card",
+                                                        Value = "Visa"
+                                                    });
+                                                }
+                                                @Html.LabelFor(m => m.CardType, new { @class = "form-label form-label-outside rd-input-label" })
+                                                @Html.DropDownListFor(m => m.CardType, cardType, new { @class = "form-control select-filter", data_minimum_results_for_research = "Infinity" })
+                                            </div>
+                                        </div>
+                                        <div class="cell-sm-6 offset-top-20 offset-sm-top-0">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.CardNumber, new { @class = "form-label form-label-outside rd-input-label" })
+                                                @Html.TextBoxFor(m => m.CardNumber, new { @class = "form-control form-control-gray  form-control-last-child", type = "text", placeholder = "e.g. 5241-4241-4242-4214" })
+                                            </div>
+                                        </div>
+                                        <div class="cell-sm-6 offset-top-20">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.CardHolderName, new { @class = "form-label form-label-outside rd-input-label" })
+                                                @Html.TextBoxFor(m => m.CardHolderName, new { @class = "form-control form-control-gray form-control-last-child", placeholder = "e.g. John Smith" })
+                                            </div>
+                                        </div>
+                                        <div class="cell-sm-6 offset-top-20">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.CCV, new { @class = "form-label form-label-outside rd-input-label" })
+                                                @Html.TextBoxFor(m => m.CCV, new { @class = "form-control form-control-gray  form-control-last-child", placeholder = "e.g. 949", type = "text" })
+                                            </div>
+                                        </div>
+                                        <div class="cell-sm-6 offset-top-20">
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.ExpiryDate, new { @class = "form-label form-label-outside rd-input-label" })
+                                                @Html.TextBoxFor(m => m.ExpiryDate, new { @class = "form-control form-control-gray  form-control-last-child", placeholder = "e.g. 05/22", type = "text" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        @Html.HiddenFor(m => m.ArrivalTime)
+                                                    @Html.HiddenFor(m => m.ArrivalTimeReturn)
+                                                    @Html.HiddenFor(m => m.Date)
+                                                    @Html.HiddenFor(m => m.DateReturn)
+                                                    @Html.HiddenFor(m => m.Destination)
+                                                    @Html.HiddenFor(m => m.DestinationAirport)
+                                                    @Html.HiddenFor(m => m.DestinationAirportReturn)
+                                                    @Html.HiddenFor(m => m.DestinationReturn)
+                                                    @Html.HiddenFor(m => m.Duration)
+                                                    @Html.HiddenFor(m => m.DurationReturn)
+                                                    @Html.HiddenFor(m => m.Time)
+                                                    @Html.HiddenFor(m => m.TimeReturn)
+                                                    @Html.HiddenFor(m => m.hasReturn)
+                                                    @Html.HiddenFor(m => m.Origin)
+                                                    @Html.HiddenFor(m => m.OriginAirport)
+                                                    @Html.HiddenFor(m => m.OriginAirportReturn)
+                                                    @Html.HiddenFor(m => m.OriginReturn)
+                                                    @Html.HiddenFor(m => m.Price)
+                                                    @Html.HiddenFor(m => m.PriceReturn)
+                                                    @Html.HiddenFor(m => m.Seat_Class)
+                                                    @Html.HiddenFor(m => m.UserId)
+                                                    <div class="range">
+                                                        <div class="cell-lg-2 offset-md-top-30 offset-top-20 center-block">
+                                                                <input class="btn btn-info btn-block offset-top-22" type="submit" value="Confirm" />
+                                                                </div></div>
+
+                                                            </div>                                                                }
+</section></main>
+        <script src="https://cdn.anychart.com/js/7.14.0/anychart-bundle.min.js"></script>
+        <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+        <script src="https://cdn.anychart.com/csv-data/boeing_737.js"></script>
+        <script type="text/javascript">
+            anychart.onDocumentReady(function () {
+                stage = acgraph.create('container');
+                // get svg file
+                $.ajax({
+                    type: 'GET',
+                    url: 'https://cdn.anychart.com/svg-data/seat-map/boeing_737.svg',
+                    success: function (svgData) {
+                        // from the CDN https://cdn.anychart.com/csv-data/boeing_737.js to data file
+                        var data = boeingData();
+                        chart = anychart.seatMap(data);
+                        // set svg data,
+                        chart.geoData(svgData);
+                        chart.padding([105, 0, 20, 0])
+                            .unboundRegions('as-is');
+
+                        series = chart.getSeries(0);
+                        // sets fill series
+                        series.fill(function () {
+                            var attrs = this.attributes;
+
+                            return attrs ? attrs.fill : this.sourceColor;
+                        })
+                            // sets stroke series
+                            .stroke(function () {
+                                var attrs = this.attributes;
+
+                                return attrs ? attrs.stroke : this.sourceColor;
+                            });
+
+                        // sets fill on hover series and select series
+                        series.hoverFill(returnColorHoverAndSelect);
+                        series.selectFill(returnColorHoverAndSelect);
+
+                        // Create chart tooltip own title
+                        series.tooltip().titleFormat('Seat');
+
+                        // Create chart tooltip own text
+                        series.tooltip().format('{%Id}');
+
+                        // create label zoom
+                        var zoomLabel = chart.label(0);
+                        zoomLabel.text("2x Zoom.")
+                            .background('#9E9E9E')
+                            .fontColor("#fff")
+                            .padding(5)
+                            .position('CenterTop')
+                            .offsetX(5)
+                            .offsetY(60);
+
+                        zoomLabel.listen("click", function () {
+                            // zoom map in 2 times
+                            chart.zoom(2);
+                        });
+
+                        // set color for label hover
+                        zoomLabel.listen('mouseOver', mouseOverLabel);
+                        zoomLabel.listen('mouseOut', mouseOutLabel);
+
+                        // create label zoom to
+                        var zoomToLabel = chart.label(1);
+                        zoomToLabel.text("1x Zoom.")
+                            .background('#9E9E9E')
+                            .fontColor("#fff")
+                            .position('CenterTop')
+                            .padding(5)
+                            .offsetX(-75)
+                            .offsetY(60);
+
+                        zoomToLabel.listen("click", function () {
+                            // zoomTo map
+                            chart.zoomTo(1);
+                        });
+
+                        // set color for label hover
+                        zoomToLabel.listen('mouseOver', mouseOverLabel);
+                        zoomToLabel.listen('mouseOut', mouseOutLabel);
+
+
+                        // add pointsHover listener to get hovered place info
+                        chart.listen('pointsHover', function (point) {
+                            var placeInfo;
+                            if (point.seriesStatus[0].points[0] !== undefined) {
+                                placeInfo = placeInfoFunc(point.seriesStatus[0].points[0].id);
+                            }
+                        });
+
+                        // add pointsSelect listener to get select place info
+                        chart.listen('pointsSelect', function (points) {
+                            var placesInfo = points.seriesStatus[0].points;
+                            var placesId = [];
+                            var totalPrice = 0;
+                            if (chart.getSelectedPoints().length) {
+                                for (var i = 0; i < placesInfo.length; i++) {
+                                    placesId.push(points.seriesStatus[0].points[i].id);
+                                    totalPrice += parseInt(placeInfoFunc(points.seriesStatus[0].points[i].id).price);
+                                }
+                                $("#seat").html("You've chosen: " + placesId[0]);
+                                document.getElementById("seat_no").value = placesId[0];
+                            }
+
+                        });
+
+                        // add chartClick listener to reset labelSelectPlace values
+                        chart.listen('click', function () {
+                            if (chart.getSelectedPoints().length == 0) {
+                            }
+                        });
+
+                        // set container id for the chart
+                        chart.container(stage);
+                        // initiate chart drawing
+                        chart.draw();
+                    }
+                });
+            });
+
+            function returnColorHoverAndSelect() {
+                return '#64b5f6';
+            }
+
+            function mouseOverLabel() {
+                this.background(anychart.color.darken('#9E9E9E', 0.35));
+            }
+
+            function mouseOutLabel() {
+                this.background('#9E9E9E');
+            }
+
+            function placeInfoFunc(id) {
+                const ECONOM_PLUS_ROW_MIN = 21;
+                var regBusinessClass = /[1-3]{1}-(A|B|E|F)/;
+                var regeconomClass = /([7-9]{1}|[0-9]{2})-(A|B|C|D|E|F)/;
+
+                var businessClass = id.match(regBusinessClass) ? id.match(regBusinessClass)[0] : false;
+                var economPlusClass = id.match(regeconomClass) && id.match(regeconomClass)[1] <= ECONOM_PLUS_ROW_MIN ? id.match(regeconomClass)[0] : false;
+                var economClass = id.match(regeconomClass) && id.match(regeconomClass)[1] > ECONOM_PLUS_ROW_MIN ? id.match(regeconomClass)[0] : false;
+
+                switch (id) {
+                    case businessClass:
+                        return {
+                            place: id,
+                            class: 'Business Class',
+                            price: '-'
+                        };
+                    case economPlusClass:
+                        return {
+                            place: id,
+                            class: 'Econom-Plus Class',
+                            price: '-'
+                        };
+                    case economClass:
+                        return {
+                            place: id,
+                            class: 'Econom Class',
+                            price: '-'
+                        };
+                }
+            }
+        </script>

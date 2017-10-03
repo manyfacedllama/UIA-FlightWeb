@@ -1,0 +1,11 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+        <div class="rd-navbar-collapse-toggle toggle-original" data-rd-navbar-toggle=".rd-navbar-top-panel"><span></span></div>
+        <div class="rd-navbar-top-panel toggle-original-elements">
+            <div class="rd-navbar-top-panel-left"></div>
+                <div class="rd-navbar-top-panel-right">
+                    <span class="text-middle icon icon-sm mdi mdi-map-marker"></span> <a class="text-middle"> Logged in as @User.Identity.GetUserName()</a>
+                </div>
+            </div>
+            }

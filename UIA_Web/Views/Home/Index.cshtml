@@ -1,0 +1,404 @@
+﻿@model UIA_Web.Models.SearchFlightModel
+@{
+    ViewBag.Title = "Home Page";
+}
+    <header class="page-header context-dark" style="background: no-repeat url('../../images/uia_bg.jpeg') center; background-size: cover;">
+        <div class="shell shell-wide section-70 section-md-90">
+            <div class="range range-xs-middle range-xs-justify text-md-left">
+                <div class="cell-xl-4 cell-lg-5 cell-md-6 text-left">
+                    <div class="responsive-tabs text-md-left nav-custom-dark view-animate fadeInUpSmall" data-type="horizontal">
+                        <!-- Responsive-tabs-->
+                        <ul class="nav-custom-tabs resp-tabs-list">
+                            <li class="nav-item"><span class="icon mdi mdi-airplane"></span><span>Flights</span></li>
+                        </ul>
+                        <div class="resp-tabs-container nav-custom-tab nav-custom-wide">
+
+@using (Html.BeginForm("SearchResult", "Flight", FormMethod.Post, new { @class = "small", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+                                    <div class="range">
+                                        <div class="cell-md-12">
+                                            <div class="form-group radio-inline-wrapper">
+
+                                                <label class="radio-inline">
+
+                                                    @Html.RadioButtonFor(m=>m.hasReturn, true, new {@class= "radio-custom", name = "input-group-radio", @checked = true, onchange = "toggleDisabled(!this.checked)" } )Round trip
+                                                </label>
+                                                <label class="radio-inline">
+                                                    @Html.RadioButtonFor(m => m.hasReturn,false, new {@class= "radio-custom", name = "input-group-radio", onchange = "toggleDisabled(this.checked)"})One way
+                                                </label>
+                                            </div>
+                                        </div>
+                                        @{
+                                            List<SelectListItem> citiesOrigin = new List<SelectListItem>();
+                                            citiesOrigin.Add(new SelectListItem
+                                            {
+                                                Text = "Select your origin",
+                                                Value = "default",
+                                                Selected = true,
+                                                Disabled = true
+                                            });
+                                            citiesOrigin.Add(new SelectListItem
+                                            {
+                                                Text = "Kuala Lumpur (KUL), Malaysia",
+                                                Value = "KLIA"
+                                            });
+                                            citiesOrigin.Add(new SelectListItem
+                                            {
+                                                Text = "London (LND), United Kingdom",
+                                                Value = "LHR"
+                                            });
+                                            citiesOrigin.Add(new SelectListItem
+                                            {
+                                                Text = "Kiev (IEV), Ukraine",
+                                                Value = "KBP"
+                                            });
+                                            citiesOrigin.Add(new SelectListItem
+                                            {
+                                                Text = "Paris (PAR), France",
+                                                Value = "CDG"
+                                            });
+                                            citiesOrigin.Add(new SelectListItem
+                                            {
+                                                Text = "Tehran (TEH), Iran",
+                                                Value = "IKIA"
+                                            });
+                                        }
+                                        @{
+                                            List<SelectListItem> citiesDestination = new List<SelectListItem>();
+                                            citiesDestination.Add(new SelectListItem
+                                            {
+                                                Text = "Select your destination",
+                                                Value = "default",
+                                                Selected = true,
+                                                Disabled = true
+                                            });
+                                            citiesDestination.Add(new SelectListItem
+                                            {
+                                                Text = "Kuala Lumpur (KUL), Malaysia",
+                                                Value = "KLIA"
+                                            });
+                                            citiesDestination.Add(new SelectListItem
+                                            {
+                                                Text = "London (LND), United Kingdom",
+                                                Value = "LHR"
+                                            });
+                                            citiesDestination.Add(new SelectListItem
+                                            {
+                                                Text = "Kiev (IEV), Ukraine",
+                                                Value = "KBP"
+                                            });
+                                            citiesDestination.Add(new SelectListItem
+                                            {
+                                                Text = "Paris (PAR), France",
+                                                Value = "CDG"
+                                            });
+                                            citiesDestination.Add(new SelectListItem
+                                            {
+                                                Text = "Tehran (TEH), Iran",
+                                                Value = "IKIA"
+                                            });
+                                        }
+                                        <div class="range offset-top-24">
+                                            <div class="cell-sm-6">
+                                                <div class="form-group">
+                                                    <label class="form-group-label">From</label>
+                                                    @Html.DropDownListFor(m => m.OriginAirport, citiesOrigin,new { @class = "form-control select-filter", data_minimum_results_for_research="Infinity", id="origin",onchange = "updateDestination(this.value)"})
+                                                </div>
+                                            </div>
+                                            <div class="cell-sm-6 offset-top-15 offset-sm-top-0">
+                                                <div class="form-group">
+                                                    <label class="form-group-label">To</label>
+                                                    <!--Select 2-->
+                                                    @Html.DropDownListFor(m => m.DestinationAirport, citiesDestination, new { @class = "form-control select-filter", data_minimum_results_for_research = "Infinity",id="destination", onchange = "updateOrigin(this.value)" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="range offset-top-15">
+                                            <div class="cell-sm-6">
+                                                <div class="form-group">
+                                                        @Html.LabelFor(m => m.Date, new { @class = "form-group-label" })
+                                                        @Html.TextBoxFor(m => m.Date, new { @class = "form-control form-control-gray", data_time_picker = "date", placeholder = "dd/MM/yyyy" })
+                                                    </div>
+                                            </div>
+                                            <div class="cell-sm-6 offset-top-15 offset-sm-top-0">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(m => m.DateReturn, new { @class = "form-group-label" })
+                                                    @Html.TextBoxFor(m => m.DateReturn, new { @class = "form-control form-control-gray", id = "return_date", data_time_picker = "date", placeholder = "dd/MM/yyyy" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="range offset-top-15">
+                                            <div class="cell-sm-6">
+                                                <div class="form-group">
+                                                    <label class="form-group-label">Seat Class</label>
+                                                    @{
+                                                        List<SelectListItem> seatClass = new List<SelectListItem>();
+                                                        seatClass.Add(new SelectListItem
+                                                        {
+                                                            Text = "Select seat class",
+                                                            Value = "default",
+                                                            Selected = true,
+                                                            Disabled = true
+                                                        });
+                                                        seatClass.Add(new SelectListItem
+                                                        {
+                                                            Text = "Economy Class",
+                                                            Value = "Economy Class"
+                                                        });
+                                                        seatClass.Add(new SelectListItem
+                                                        {
+                                                            Text = "Economy Plus Class",
+                                                            Value = "Economy Plus Class"
+                                                        });
+                                                        seatClass.Add(new SelectListItem
+                                                        {
+                                                            Text = "First Class",
+                                                            Value = "First Class"
+                                                        });
+                                                    }
+                                                    <!--Select 2-->
+                                                    @Html.DropDownListFor(m => m.Seat_Class, seatClass, new { @class = "form-control select-filter", data_minimum_results_for_research = "Infinity" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="range-xs-justify range-xs-middle range offset-top-20 text-center text-xs-left">
+                                            <div class="cell-xs-6">
+                                            </div>
+                                            <div class="cell-lg-clear-flex cell-xs-6 text-xs-right offset-top-15 offset-xs-top-0">
+                                                <button class="btn btn-info btn-sm button-inset-30 btn-naira btn-naira-up" type="submit"><span class="icon fa-search"></span><span>Search Flights</span></button>
+                                            </div>
+                                        </div>
+                                    </div>
+}
+                            </div>
+                    </div>
+
+                </div>
+                <div class="cell-md-7 section-md-60 section-lg-140 view-animate fadeInRightSm delay-02">
+                    <h2 class="text-ubold text-capitalize"><span class="big" style="text-transform: initial;">Book your dream flight.</span></h2>
+                    <p class="offset-top-20 offset-md-top-30 big text-width-720">With UIA, you can easily book any ticket you need to travel safely thanks to our detailed system of searching and booking airline tickets.</p><a class="offset-top-20 offset-md-top-40 btn btn-white-variant-1 btn-sm" href="ticket-list.html"><span>Read More</span></a>
+                </div>
+            </div>
+        </div>
+    </header>
+<main class="page-content">
+
+    <section class="section-80 section-md-120 bg-gray-lighter">
+        <div class="wow fadeInUp shell shell-wide text-left">
+            <h2 class="text-center text-ubold">Available Flights</h2>
+            <hr class="divider divider-80 divider-info">
+            <!-- Owl Carousel-->
+            <div class="offset-top-50 offset-lg-top-90 owl-nav-variant-1 owl-dots-lg owl-carousel" data-nav="true" data-items="1" data-sm-items="2" data-lg-items="3" data-margin="30" data-mouse-drag="false" style="height: 480px;">
+                <!-- Thumbnail-->
+                <div class="thumbnail-variant-1">
+                    <div><img class="img-responsive center-block" src="~/images/home_paris.png" width="270" height="360" alt=""></div>
+                    <div class="caption">
+                        <h4 class="text-ubold">Paris</h4>
+                        <p class="offset-top-2 text-italic text-gray">France</p>
+                        <p class="offset-top-10 offset-lg-top-40">Departure City:</p>
+                        <ul class="list-marked list-marked-no-padding list-marked-flex text-base">
+                            <li>
+                                <a class="text-primary" href="ticket-list.html">Kiev</a>
+                                <div>
+                                    <p>@HttpContext.Current.Items["currency"] 98.00</p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="text-primary" href="ticket-list.html">Kuala Lumpur</a>
+                                <div>
+                                    <p>@HttpContext.Current.Items["currency"] 134.00</p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="text-primary" href="ticket-list.html">London</a>
+                                <div>
+                                    <p>@HttpContext.Current.Items["currency"] 119.00</p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="text-primary" href="ticket-list.html">Tehran</a>
+                                <div>
+                                    <p>@HttpContext.Current.Items["currency"] 159.00</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="thumbnail-variant-1">
+                    <div><img class="img-responsive center-block" src="~/images/home_london.png" width="270" height="360" alt=""></div>
+                    <div class="caption">
+                        <h4 class="text-ubold">London</h4>
+                        <p class="offset-top-2 text-italic text-gray">United Kingdom</p>
+                        <p class="offset-top-10 offset-lg-top-40">Departure City:</p>
+                        <ul class="list-marked list-marked-no-padding list-marked-flex text-base">
+                            <li>
+                                <a class="text-primary" href="ticket-list.html">Kiev</a>
+                                <div>
+                                    <p>@HttpContext.Current.Items["currency"] 98.00</p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="text-primary" href="ticket-list.html">Paris</a>
+                                <div>
+                                    <p>@HttpContext.Current.Items["currency"] 134.00</p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="text-primary" href="ticket-list.html">Kuala Lumpur</a>
+                                <div>
+                                    <p>@HttpContext.Current.Items["currency"] 119.00</p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="text-primary" href="ticket-list.html">Tehran</a>
+                                <div>
+                                    <p>@HttpContext.Current.Items["currency"] 159.00</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="thumbnail-variant-1">
+                    <div><img class="img-responsive center-block" src="~/images/home_kl.png" width="270" height="360" alt=""></div>
+                    <div class="caption">
+                        <h4 class="text-ubold">Kuala Lumpur</h4>
+                        <p class="offset-top-2 text-italic text-gray">Malaysia</p>
+                        <p class="offset-top-10 offset-lg-top-40">Departure City:</p>
+                        <ul class="list-marked list-marked-no-padding list-marked-flex text-base">
+                            <li>
+                                <a class="text-primary" href="ticket-list.html">Kiev</a>
+                                <div>
+                                    <p>@HttpContext.Current.Items["currency"] 98.00</p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="text-primary" href="ticket-list.html">Paris</a>
+                                <div>
+                                    <p>@HttpContext.Current.Items["currency"] 134.00</p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="text-primary" href="ticket-list.html">London</a>
+                                <div>
+                                    <p>@HttpContext.Current.Items["currency"] 119.00</p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="text-primary" href="ticket-list.html">Tehran</a>
+                                <div>
+                                    <p>@HttpContext.Current.Items["currency"] 159.00</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Thumbnail-->
+                <div class="thumbnail-variant-1">
+                    <div><img class="img-responsive center-block" src="~/images/home_kiev.png" width="270" height="360" alt=""></div>
+                    <div class="caption">
+                        <h4 class="text-ubold">Kiev</h4>
+                        <p class="offset-top-2 text-italic text-gray">Ukraine</p>
+                        <p class="offset-top-10 offset-lg-top-40">Departure City:</p>
+                        <ul class="list-marked list-marked-no-padding list-marked-flex text-base">
+                            <li>
+                                <a class="text-primary" href="ticket-list.html">Kuala Lumpur</a>
+                                <div>
+                                    <p>@HttpContext.Current.Items["currency"] 98.00</p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="text-primary" href="ticket-list.html">Paris</a>
+                                <div>
+                                    <p>@HttpContext.Current.Items["currency"] 134.00</p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="text-primary" href="ticket-list.html">London</a>
+                                <div>
+                                    <p>@HttpContext.Current.Items["currency"] 119.00</p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="text-primary" href="ticket-list.html">Tehran</a>
+                                <div>
+                                    <p>@HttpContext.Current.Items["currency"] 99.00</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Thumbnail-->
+                <div class="thumbnail-variant-1">
+                    <div><img class="img-responsive center-block" src="~/images/home_tehran.png" width="270" height="360" alt=""></div>
+                    <div class="caption">
+                        <h4 class="text-ubold">Tehran</h4>
+                        <p class="offset-top-2 text-italic text-gray">Iran</p>
+                        <p class="offset-top-10 offset-lg-top-40">Departure City:</p>
+                        <ul class="list-marked list-marked-no-padding list-marked-flex text-base">
+                            <li>
+                                <a class="text-primary" href="ticket-list.html">Kiev</a>
+                                <div>
+                                    <p>@HttpContext.Current.Items["currency"] 98.00</p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="text-primary" href="ticket-list.html">Kuala Lumpur</a>
+                                <div>
+                                    <p>@HttpContext.Current.Items["currency"] 134.00</p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="text-primary" href="ticket-list.html">Paris</a>
+                                <div>
+                                    <p>@HttpContext.Current.Items["currency"] 119.00</p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="text-primary" href="ticket-list.html">London</a>
+                                <div>
+                                    <p>@HttpContext.Current.Items["currency"] 99.00</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<script>
+    function updateDestination(_value) {
+        var op = document.getElementById("destination").getElementsByTagName("option");
+        for (var i = 0; i < op.length; i++) {
+            // lowercase comparison for case-insensitivity
+            if (op[i].value.toLowerCase() == _value.toLowerCase()) {
+                op[i].disabled = true;
+            }
+            else if (op[i].value.toLowerCase() == "default"){
+                op[i].disabled = true;
+            }
+            else {
+                op[i].disabled = false;
+            }
+        }
+    }
+    function updateOrigin(_value) {
+        var op = document.getElementById("origin").getElementsByTagName("option");
+        for (var i = 0; i < op.length; i++) {
+            // lowercase comparison for case-insensitivity
+            if (op[i].value.toLowerCase() == _value.toLowerCase()) {
+                op[i].disabled = true;
+            }
+            else if (op[i].value.toLowerCase() == "default") {
+                op[i].disabled = true;
+            }
+            else {
+                op[i].disabled = false;
+            }
+        }
+    }
+    function toggleDisabled(_checked) {
+        document.getElementById('return_date').disabled = _checked ? true : false;
+    }</script>
