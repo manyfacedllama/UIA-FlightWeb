@@ -1,6 +1,12 @@
 # UIA-FlightWeb
 A Flight Booking Web Application project for Ukraine International Airlines (University Project).
 
+## Features
+ * Book & Manage various Flights
+ * External Configuration Store - Cloud Design Pattern
+ * GeoIP-based Currency
+ * Dynamic Seat Picker Implementation using SVG
+ 
 ## Getting Started
 To deploy & host the web application on Microsoft Azure.
 
@@ -10,7 +16,10 @@ To deploy & host the web application on Microsoft Azure.
 * Update the connection string values.
 
 ### Publish
+* Ensure the database has been migrated to Azure SQL and the web.config has been updated.
 * Publish the web application to Microsoft Azure as an App Service (Web App).
+* You can implement Traffic Manager to direct and reduce the user load across varying web apps deployed in different regions
+* Continuous Deployment through Git Repository has been demonstrated in the video below.
 
 ## Built With
 * ASP.NET MVC
