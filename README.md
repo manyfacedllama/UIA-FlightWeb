@@ -2,7 +2,9 @@
 A Flight Booking Web Application project for Ukraine International Airlines (University Project).
 
 ## Features
- * Book & Manage various Flights
+ * Intuitive Design using Bootstrap & jQuery
+ * Create & Manage Customer Profile
+ * Book & Manage Several Flight Tickets
  * External Configuration Store - Cloud Design Pattern
  * GeoIP-based Currency
  * Dynamic Seat Picker Implementation using SVG
