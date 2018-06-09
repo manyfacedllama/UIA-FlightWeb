@@ -1,5 +1,5 @@
 # UIA-FlightWeb
-A Flight Booking Web Application project for Ukraine International Airlines (University Project).
+A Flight Booking Web Application project for Ukraine International Airlines (University Project - Asia Pacific University (APU/APIIT)).
 
 ## Features
  * Intuitive Design using Bootstrap & jQuery
